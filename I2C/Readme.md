@@ -78,7 +78,7 @@ Controller - transmitter releases control over SDA at 9th bit so that the target
 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/2a950e27-fdea-4bc4-b46e-b22aaee2e553)
 
-**A synchronized SCL clock is generated with its LOW period determined by the controller with the longest clock LOW period, and its HIGH period determined by the one with the shortest clock HIGH period.**
+**A synchronized SCL clock is generated with its LOW period determined by the controller with the longest clock LOW period, and its HIGH period determined by the one with the shortest clock HIGH period.** <br>
 7. **Arbitration**: This process in I2C is more like a **race** between the **transmitters** which initiated the **START signals** during that **THOLD(min)**. The SDA line is **monitored** by the **controller-transmitters** and its respective **data line** is **compared** whenever **SCL** is **HIGH**. If the data line **matches** the SDA line all **good**; If the data line **!= SDA line** it has lost the **arbitration**. No data is lost as the controller can continue to generate clk pulses for that BYTE and must restart the **transaction** when bus is free.
 If a controller also incorporates a target function and it loses arbitration during the addressing stage, it is possible that the winning controller is trying to address it. The **losing controller** must therefore switch over immediately to its **target mode**.
 
@@ -95,15 +95,46 @@ If a controller also incorporates a target function and it loses arbitration dur
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/f479ba4c-982a-4d97-8740-683796a8ee20)
 
 
-11. 10-bit Address: tbc
-12. ff
-13. f
-14. f
-15. f
-16. f
+11. 10-bit Address: Not widely used for wont be goin through is as such. Basic idea of it is that it works with S, Target address 1111 0XX, R/W,A1, Target address XXXX XXXX, A2, DATA , A .... ,A/Abar,P. To change direction R/W is altered by just sending --> 1111 0XX, R/W then data is sent.  
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/5283e5a2-1779-4f2e-8067-48b5cecdfb4a)
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/424edb8d-a9fb-4119-a563-b56275cea4bf)
+
+12. General Call: It is used to address all the devices connected to the I2C bus. Devices capable of the handling the data can send an acknowledgement and change into a target receiver. The controller transmitter will not know how many devices have acknowledged the data. Those that cannot handle the data can leave the SDA line High. It again doesn't know if the how many NACK it received from the devices  
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/cf888de8-1db2-444b-8aae-2c4e9cd32e78)
+
+based of LSB B in the second byte, there are 2 cases to consider: B --> 0 and B --> 1
+
+0000 0110 --> software reset and write programmable part of target address by hardware.
+0000 0100 --> write programmable part of target address by hardware.
+0000 0000 --> not taken as 2nd byte.
+
+XXXX XXX1 --> hardware general call; hardware controller device like keyboard scanner, sends desired target address. Intelligent device microcontroller picks up the info and starts communicating with the hardware controller device. <br>
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/e3b654eb-2b68-438e-b9f5-9714300cb5a1)
+
+On software reset, the hardware controller transmitter is set to target receiver mode. A system configuring controller dumps the target address to the target receiver. After the programming procedure, it changes into a controller transmitter and begins to communicate with that device.  
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/2d8818a2-f5bd-45b7-92c7-b28cd80643a7)
+
+13. Software reset: general call --> S,0000 0000,A,0000 0110,A ...
+14. Start BYTE: explore later
+15. Bus Clear: HW reset to clear the bus through HW reset input on device;  cycle power to the devices to activate the mandatory internal Power-On Reset (POR) circuit.
+If the data line (SDA) is stuck LOW, the controller should send nine clock pulses. The device that held the bus LOW should release it sometime within those nine clocks. If not, then use the HW reset or cycle power to clear the bus.
+16. Device ID: refer the PDF for details 
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/a689ea95-c5a6-48ed-bb08-adff04f1fbd2)
+
+S, 1111 1000, A, target address, X, Sr, 1111 1001, DEVICE ID READ --> 8+4, 4+5, 3, NACK,P
+
+if ACK instead of NACK the DEVICE ID READ repeats.  
 17. f
 18. f
-19. 
+19. f
+20. 
+21. 
 
 
 ### References
