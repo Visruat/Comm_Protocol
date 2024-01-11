@@ -130,12 +130,38 @@ If the data line (SDA) is stuck LOW, the controller should send nine clock pulse
 S, 1111 1000, A, target address, X, Sr, 1111 1001, DEVICE ID READ --> 8+4, 4+5, 3, NACK,P
 
 if ACK instead of NACK the DEVICE ID READ repeats.  
-17. f
-18. f
-19. f
-20. 
-21. 
 
+### UFm for I2C
+1. data rates can reach upto 5mb/s.
+2. uni-directional flow of data (controller-transmitter to target receiver).
+3. used for led controllers, lcd drivers which require > 1 mb/s data rate.
+4. push-pull drivers instead of AND wired open drain lines.
+5. Signal format of UFm I2C:
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/b2f5484e-b531-4116-91c1-702ec296cf30)
+
+6. USDA and USCL; at 9th clock pulse (USCL), drives USDA to HIGH (always NACK). Wbar is called as command bit because its always "0" (uni-directional).
+7. Target is not allowed to hold USCL LOW even if its servicing internal interrupts or unable to accept data at the moment. (no clock-stretching)
+8. No device ID
+9. other properties are similar to I2C Normal mode.  ( Refer PDF for images )
+
+### Other uses of I2C bus communication protocols
+1. CBUS compatability - 0000 001X CBUS addressing; Dlen replaces ACK/NACK for CBUS DATA; Common STOP Signal for all devices.    
+2. System Management Bus (SMBus) - Dynamic unique address allocation (hot plug for all I2C devices connected to the bus)
+3. I2C/SMBus Compliancy - Very similar working; 10kHz to 100kHz --> SMBus ; 0 - 100kHz, 100 - 400 kHz , 1MHz , 3.4 MHz based of the mode of I2C; Time out feature of SMBus will not for I2C devices between 0 to 10 kHz.
+4. Power Management Bus System (PMBus): Power converter and System Host intelligent control.
+5. Intelligent Platform Management Interface (IPMI) -  IPMI increases reliability of systems by monitoring parameters such as temperatures, voltages, fans and chassis intrusion.
+6. Advanced Telecom Computing Architecture (ATCA)
+7. Display Data Channel (DDC) - Display to inform its identity and capabilities.
+
+## BUS Speeds
+**Bidirectional bus** <br>
+– Standard-mode (Sm), with a bit rate up to 100 kbit/s <br>
+– Fast-mode (Fm), with a bit rate up to 400 kbit/s <br>
+– Fast-mode Plus (Fm+), with a bit rate up to 1 Mbit/s <br>
+– High-speed mode (Hs-mode), with a bit rate up to 3.4 Mbit/s <br>
+**Unidirectional bus** <br>
+– Ultra Fast-mode (UFm), with a bit rate up to 5 Mbit/s <br>
 
 ### References
 1. [GFG](https://www.geeksforgeeks.org/i2c-communication-protocol/)
