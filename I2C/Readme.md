@@ -11,7 +11,7 @@
 3. 9-bit protocol. 8 for address and 1 reserved for ACK/NACK bit i.e Acknowledgment and Not Acknowledge.
 4. SDA and SCL bus lines are Open Drain; connected with pullup resistors as devices are active low.
 
-[Open-Drain](https://www.analog.com/en/design-center/glossary/open-drain-collector.html) mode is for FET wherein the drain connected to the output is pulled to High in OFF state and reflect the required output in ON state
+[Open-Drain](https://www.analog.com/en/design-center/glossary/open-drain-collector.html) mode is for FET wherein the drain connected to the output is pulled to High in OFF state (pull-up resistor) and reflect the required output in ON state
 
 ### Signal format
 
@@ -73,13 +73,13 @@ Checking spec sheet by NXP  [I2C.pdf](https://github.com/Visruat/Comm_Protocol/f
 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/9b3e200c-95ef-459d-9ef3-8eff06cdd406)
 
-Controller - transmitter releases control over SDA at 9th bit so that the target/controller - receiver can pull down SDA for ACK/NACK.  
+Controller/target - transmitter releases control over SDA at 9th bit so that the target/controller - receiver can pull down SDA for ACK/NACK.  
 6. **Clock Synchronisation**: Clock synchronization is performed using the wired-AND connection of I2C interfaces to the SCL line. This means that a HIGH to LOW transition on the SCL line causes the controllers concerned to start **counting off their LOW period** and, once a **controller** **clock** has **gone LOW**, it **holds the SCL line** in that **state** until the **clock HIGH** state is reached. When all controllers concerned have counted off their LOW period, the clock line is **released** and goes **HIGH**. There is then **no difference** between the **controller clocks** and the state of the **SCL line**, and all the controllers start **counting their HIGH periods**. The **first controller** to complete its **HIGH period** pulls the **SCL line LOW** again.
 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/2a950e27-fdea-4bc4-b46e-b22aaee2e553)
 
 **A synchronized SCL clock is generated with its LOW period determined by the controller with the longest clock LOW period, and its HIGH period determined by the one with the shortest clock HIGH period.** <br>
-7. **Arbitration**: This process in I2C is more like a **race** between the **transmitters** which initiated the **START signals** during that **THOLD(min)**. The SDA line is **monitored** by the **controller-transmitters** and its respective **data line** is **compared** whenever **SCL** is **HIGH**. If the data line **matches** the SDA line all **good**; If the data line **!= SDA line** it has lost the **arbitration**. No data is lost as the controller can continue to generate clk pulses for that BYTE and must restart the **transaction** when bus is free.
+7. **Arbitration**: This process in I2C is more like a **race** between the **transmitters** which initiated the **START signals** within that **THOLD(min)**. The SDA line is **monitored** by the **controller-transmitters** and its respective **data line** is **compared** whenever **SCL** is **HIGH**. If the data line **matches** the SDA line all **good**; If the data line **!= SDA line** it has lost the **arbitration**. No data is lost as the controller can continue to generate clk pulses for that BYTE and must restart the **transaction** when bus is free.
 If a controller also incorporates a target function and it loses arbitration during the addressing stage, it is possible that the winning controller is trying to address it. The **losing controller** must therefore switch over immediately to its **target mode**.
 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/d1435d19-9e66-440f-b23f-f9eb8c50c025)
@@ -115,12 +115,13 @@ XXXX XXX1 --> hardware general call; hardware controller device like keyboard sc
 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/e3b654eb-2b68-438e-b9f5-9714300cb5a1)
 
-On software reset, the hardware controller transmitter is set to target receiver mode. A system configuring controller dumps the target address to the target receiver. After the programming procedure, it changes into a controller transmitter and begins to communicate with that device.  
+On software reset, the hardware controller transmitter is set to target receiver mode. A system configuring controller dumps the target address to the target receiver. After the programming procedure, it changes into a controller transmitter and begins to communicate with that device. 
 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/2d8818a2-f5bd-45b7-92c7-b28cd80643a7)
 
 13. Software reset: general call --> S,0000 0000,A,0000 0110,A ...
-14. Start BYTE: explore later
+14. Start BYTE: **Unsure of its usage.** (check with shashank or sameer)
+eg. After the START condition S has been transmitted by a controller which requires bus access, the START byte (0000 0001) is transmitted. Another microcontroller can therefore sample the SDA line at a low sampling rate until one of the seven zeros in the START byte is detected. After detection of this LOW level on the SDA line, the microcontroller can switch to a higher sampling rate to find the repeated START condition Sr which is then used for synchronization
 15. Bus Clear: HW reset to clear the bus through HW reset input on device;  cycle power to the devices to activate the mandatory internal Power-On Reset (POR) circuit.
 If the data line (SDA) is stuck LOW, the controller should send nine clock pulses. The device that held the bus LOW should release it sometime within those nine clocks. If not, then use the HW reset or cycle power to clear the bus.
 16. Device ID: refer the PDF for details 
@@ -143,7 +144,7 @@ if ACK instead of NACK the DEVICE ID READ repeats.
 6. USDA and USCL; at 9th clock pulse (USCL), drives USDA to HIGH (always NACK). Wbar is called as command bit because its always "0" (uni-directional).
 7. Target is not allowed to hold USCL LOW even if its servicing internal interrupts or unable to accept data at the moment. (no clock-stretching)
 8. No device ID
-9. other properties are similar to I2C Normal mode.  ( Refer PDF for images )
+9. other properties are similar to I2C Standard mode.  ( Refer PDF for images )
 
 ### Other uses of I2C bus communication protocols
 1. CBUS compatability - 0000 001X CBUS addressing; Dlen replaces ACK/NACK for CBUS DATA; Common STOP Signal for all devices.    
