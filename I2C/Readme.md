@@ -167,11 +167,94 @@ if ACK instead of NACK the DEVICE ID READ repeats.
 **Unidirectional bus** <br>
 – Ultra Fast-mode (UFm), with a bit rate up to 5 Mbit/s <br>
 
+Note: All faster bidirectional I2C modes are downward compatible and hence can be used in mixed signal bus systems. This achieved by holding the SCL line low to stretch the clock period, bridges (to make hs and fm operate together) and pull up and pull down n/w ( current source / resistor )
+
+### Fm: 
+- SDA and SCL have spike suppression and Schmitt Trigger to prevent noise interference 
+- Output buffers have slope control of the falling edges of SDA and SCL <!-- but why do we need slope control? -->
+- Higher bus loads (>200 pF & <400 pF) needs pull up current source (3 mA max) else resistor is sufficient.
+
+### Fm+:
+- Stronger drive current is used; Hence can drive higher capacitance buses without using bus buffers.
+- bus speed can be traded with load capacitance; max factor of 10.
+- the high drive strength and tolerance for slow rise and fall times allow the use of larger bus capacitance as long as set-up, minimum LOW time and minimum HIGH time for Fast-mode Plus are all satisfied.
+- The fall time and rise time do not exceed the 300 ns tf and 1 μs tr specifications of Standard-mode.
+- SDA and SCL have spike suppression and Schmitt Trigger to prevent noise interference 
+- Output buffers have slope control of the falling edges of SDA and SCL
+  
+Note: Sm,Fm,Fm+ use the same protocol, format and logic levels. Fm+ has different max capacitive loads.
+
+### Hs:
+- separate bus lines; SDAH and SCLH
+- no arbitration and clock synchronization.
+- Built in bridge to use in mixed bus signal systems.
+- SDAH and SCLH have spike suppression and Schmitt Trigger to prevent noise interference 
+- Output buffers have slope control of the falling edges of SDAH and SCLH.
+
+#### Serial Data format for Hs mode: 
+Initially operates in Fm. Until the following sequence is encountered.
+
+- S
+- 8 bit controller code ( 0000 1XXX )
+- not ack
+
+Enters Hs after ~A.
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/9ca51d7d-0f52-479d-abb0-a6b1623179d4)
+
+Once ~A is received T1. At Th the SCLH line is pulled HIGH to enable switches and enables for Hs mode. Current source pull up (MCS) circuit  is used for shorter rise time. SCLH is pulled HIGH only after all devices releases the SCLH line to prevent slowing down the transition. Sr bit is sent and regular I2C comms is initiated now.
+
+<br>
+After every acknowledgement bit, MCS circuit is disengaged and re-enagaged only after the SCLH line is released byu all devices. It operates in Hs mode until P is encountered after which it switches back to Fm mode. 
+
+<br>
+<br>
+Note: To reduce overhead  of the controller code, it is possible that a controller links a number of Hs-mode transfers, separated by repeated START conditions (Sr). 
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/df8cf6ef-abc5-4699-b001-9864f8b7664c)
+
+#### Switching from Fm to Hs
+
+The active (winning) controller:
+
+1. Adapts its SDAH and SCLH input filters according to the spike suppression requirement in Hs-mode.
+2. Adapts the set-up and hold times according to the Hs-mode requirements.
+3. Adapts the slope control of its SDAH and SCLH output stages according to the Hsmode requirement.
+4. Switches to the Hs-mode bit-rate, which is required after time tH.
+5. Enables the current source pull-up circuit of its SCLH output stage at time tH.
+
+The non-active, or losing controllers:
+
+1. Adapt their SDAH and SCLH input filters according to the spike suppression requirement in Hs-mode.
+2. Wait for a STOP condition to detect when the bus is free again.
+
+All targets:
+
+1. Adapt their SDAH and SCLH input filters according to the spike suppression requirement in Hs-mode.
+2. Adapt the set-up and hold times according to the Hs-mode requirements. This requirement may already be fulfilled by the adaptation of the input filters.
+3. Adapt the slope control of their SDAH output stages, if necessary. For target devices, slope control is applicable for the SDAH output stage only and, depending on circuit tolerances, both the Fast-mode and Hs-mode requirements may be fulfilled without switching its internal circuit.
+
+Note: At lower speeds, MCS is disabled and SDAH and SCLH lines are compatible with SDA and SCL.
+
+### Mixed Bus Signal Systems
+A bridge is present to link the SCL, SDA (VDD2 = 5V; should be 5V tolerant) and SCLH, SDAH ( VDD1 = 3V ). Bridge --> TR1, TR2 (transfer gate function)  AND TR3 (open drain pull down MOSFET) are N-channel MOSFETS.   
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/7fc025da-1c4f-4097-807d-3c355956517c)
+
+Bridge functioning after controller code is read:
+The controller code is recognized by the bridge in the active or non-active controller. 
+The bridge performs the following actions:
+1. Between t1 and tH, transistor TR1 opens to separate the SDAH and SDA lines, after which transistor TR3 closes to pull-down the SDA line to VSS.
+2. When both SCLH and SCL become HIGH, transistor TR2 opens to separate the SCLH and SCL lines. TR2 must be opened before SCLH goes LOW after Sr.
+
+Note: In irregular situations, F/S-mode devices can close the bridge (TR1 and TR2 closed, TR3 open) at any time by pulling down the SCL line for at least 1 μs, for example, to recover from a bus hang-up.
+
+Bridge Functioning after STOP is read:
+1. Transistor TR2 closes after tFS to connect SCLH with SCL; both of which are HIGH at this time. Transistor TR3 opens after tFS, which releases the SDA line and allows it to be pulled HIGH by the pull-up resistor Rp. This is the STOP condition for the F/S mode devices. TR3 must open fast enough to ensure the bus free time between the STOP condition and the earliest next START condition is according to the Fast-mode specification.
+2. When SDA reaches a HIGH, transistor TR1 closes to connect SDAH with SDA. (Note: interconnections are made when all lines are HIGH, thus preventing spikes on the bus lines.) TR1 and TR2 must be closed within the minimum bus free time according to the Fast-mode specification.
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/d6434d4b-1e9f-49a3-8a19-b9a1718cc45c)
 
+##  Electrical specifications and timing for I/O stages and bus lines
 
 ### References
 1. [GFG](https://www.geeksforgeeks.org/i2c-communication-protocol/)
