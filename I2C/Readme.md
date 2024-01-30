@@ -1,6 +1,9 @@
 ## Images --> for review of concept and terms 
 1. Push pull drive
 2. Noise Margin
+3. Open Drain logic
+4. Schmitt Trigger Volatge Characteristics
+5. Opamp
 
 # I2C Protocol
 
@@ -164,7 +167,14 @@ if ACK instead of NACK the DEVICE ID READ repeats.
 **Unidirectional bus** <br>
 – Ultra Fast-mode (UFm), with a bit rate up to 5 Mbit/s <br>
 
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/9ca51d7d-0f52-479d-abb0-a6b1623179d4)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/df8cf6ef-abc5-4699-b001-9864f8b7664c)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/7fc025da-1c4f-4097-807d-3c355956517c)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/d6434d4b-1e9f-49a3-8a19-b9a1718cc45c)
+
+
 ### References
 1. [GFG](https://www.geeksforgeeks.org/i2c-communication-protocol/)
 2. [Basics of I2C communication](https://www.circuitbasics.com/basics-of-the-i2c-communication-protocol/)\
 3. [I2C.pdf](https://github.com/Visruat/Comm_Protocol/files/13887643/I2C.pdf)
+
