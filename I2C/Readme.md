@@ -2,7 +2,7 @@
 1. Push pull drive
 2. Noise Margin
 3. Open Drain logic
-4. Schmitt Trigger Volatge Characteristics
+4. Schmitt Trigger Voltage Characteristics
 5. Opamp
 
 # I2C Protocol
@@ -262,6 +262,10 @@ Bridge Functioning after STOP is read:
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/d6434d4b-1e9f-49a3-8a19-b9a1718cc45c)
 
 ##  Electrical specifications and timing for I/O stages and bus lines
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/3ac5df2d-6a2f-4f34-9f68-2390f7ec4a26)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/691fd650-0e93-4158-b958-b7b0b2021ff6)
+
 
 ### References
 1. [GFG](https://www.geeksforgeeks.org/i2c-communication-protocol/)
