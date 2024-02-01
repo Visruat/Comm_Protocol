@@ -268,11 +268,44 @@ Bridge Functioning after STOP is read:
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/691fd650-0e93-4158-b958-b7b0b2021ff6)
 
 Key Points: <br>
-- 
+- Vhys = Vut - Vlt
+- low level output voltage has two cases 
+  - Vol1 --> 3mA sink current; Vdd > 2V
+  - Vol2 --> 2mA sink current; Vdd <= 2V (fm,fm+)
+- low level output current has two cases
+  - Vol = 0.4 (0.2Vdd; Vdd = 1.8V)
+  - Vol = 0.6 (0.2Vdd; Vdd = 3.3V)
+- tSP filter any noise that occurs within 50ns
+- High level input voltage
+  - Vih = Vdd(max) + 0.5V; <5.5V
+  - Vih = 5.5V
+- fall time (tf) = 300ns ; output fall time ( Vih(min) - Vil(max) ) = 250ns; series protection resistor can be used provided tof > tf <br>
+<br>
 
+#### Characteristics of SDA and SCL bus lines
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/32d86ad4-0dc2-4daf-a250-c4ad1b2560c5)
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/61614d0d-4592-4786-ba26-b86a73dd0f17)
 
+**Key Points:** <br>
+- tHIGH : tLOW = 2:1 (fm,fm+)
+- SCL must be low (<0.3Vdd) before SDA begins to change (0.3Vdd < SDA <0.7Vdd)
+- if tLOW of clock is stretched by a device, tVD;DAT(max) >= tSU;DAT(min) (data should be valid by the setup time when the device releases the clock)
+- bus capacitance value may vary depending on the actual operating voltage and frequency of application.
+<br>
+
+**Waveform desciption:** <br>
+- thold for start --> time between SDA H-L (30) and SCL H-L (70)
+- tsetup for start --> time between SCL L-H (70) and SDA H-L (70)
+- tsetup for stop --> time between SCL L-H (70) and SDA L-H (30)
+- tbuf --> Bus free time between stop and start
+- thold for data --> time between SCL H-L (30) and SDA (start: 70 , 30)
+- tsetup for data --> time between SDA (end: 30 , 70) and  SCL L-H (30)
+<br>
+Note: To avoid confusion, according to definition Tsetup --> signal remains stable before control signal edge (control edge = SCL L-H). Thold --> signal remains stable after control signal edge (control edge = SCL H-L). This is because SDA is not allowed to change when SCl is HIGH (level triggered type of control signal)
+<br>
+- tvalid for data --> time between SCL H-L (30) till SDA (worse: 30 , 70)
+- tvalid for acknowledgement --> time between SCL H-L (30) till SDA (worse: 30 , 70) (9th clock cycle)
+- tsp --> supress noise which occur under 50ns time frame.
 
 
 ### References
