@@ -322,11 +322,11 @@ Note: To avoid confusion, according to definition Tsetup --> signal remains stab
 
 **Waveform desciption:** <br>
 most are similar to previous case.
-trCL --> rise time for SCLH 
-trCL1 --> rise time SCLH at first cycle (Rp pull up)
-tfCL --> fall time for SCLH
-trDA --> rise time for SDAH
-tfDA --> fall time for SDAH
+- trCL --> rise time for SCLH 
+- trCL1 --> rise time SCLH at first cycle (Rp pull up)
+- tfCL --> fall time for SCLH
+- trDA --> rise time for SDAH
+- tfDA --> fall time for SDAH
 <br>
 
 #### Characteristics of the USDA and USCL I/O stages
