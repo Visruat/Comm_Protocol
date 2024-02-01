@@ -304,6 +304,7 @@ Key Points: <br>
 <br>
 Note: To avoid confusion, according to definition Tsetup --> signal remains stable before control signal edge (control edge = SCL L-H). Thold --> signal remains stable after control signal edge (control edge = SCL H-L). This is because SDA is not allowed to change when SCl is HIGH (level triggered type of control signal)
 <br>
+<br>
 
 - tvalid for data --> time between SCL H-L (30) till SDA (worse: 30 , 70)
 - tvalid for acknowledgement --> time between SCL H-L (30) till SDA (worse: 30 , 70) (9th clock cycle).
