@@ -55,6 +55,13 @@ Read Operation is shown here:
 
 1. Slower Speed.
 2. Half duplex.
+<br>
+<br>
+#### Example of I2C applications
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/f38748d4-545c-4052-9d4a-68092181e0e5)
+
+<br>
+<br>
 
 ## In-Depth Understanding
 
