@@ -263,8 +263,16 @@ Bridge Functioning after STOP is read:
 
 ##  Electrical specifications and timing for I/O stages and bus lines
 
+#### Characteristics of SDA and SCL I/0 stage 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/3ac5df2d-6a2f-4f34-9f68-2390f7ec4a26)
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/691fd650-0e93-4158-b958-b7b0b2021ff6)
+
+Key Points: <br>
+- 
+
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/32d86ad4-0dc2-4daf-a250-c4ad1b2560c5)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/61614d0d-4592-4786-ba26-b86a73dd0f17)
+
 
 
 ### References
