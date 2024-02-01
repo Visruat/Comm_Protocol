@@ -282,7 +282,7 @@ Key Points: <br>
 - fall time (tf) = 300ns ; output fall time ( Vih(min) - Vil(max) ) = 250ns; series protection resistor can be used provided tof > tf <br>
 <br>
 
-#### Characteristics of SDA and SCL bus lines
+#### Characteristics of SDA and SCL bus lines for Sm,Fm,FM+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/32d86ad4-0dc2-4daf-a250-c4ad1b2560c5)
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/61614d0d-4592-4786-ba26-b86a73dd0f17)
 
@@ -302,7 +302,7 @@ Key Points: <br>
 - tsetup for data --> time between SDA (end: 30 , 70) and  SCL L-H (30)
 
 <br>
-Note: To avoid confusion, according to definition Tsetup --> signal remains stable before control signal edge (control edge = SCL L-H). Thold --> signal remains stable after control signal edge (control edge = SCL H-L). This is because SDA is not allowed to change when SCl is HIGH (level triggered type of control signal)
+Note: To avoid confusion, according to definition Tsetup --> signal remains stable before control signal edge (control edge = SCL L-H). Thold --> signal remains stable after control signal edge (control edge = SCL H-L). This is because SDA is not allowed to change when SCL is HIGH (level triggered type of control signal)
 <br>
 <br>
 
@@ -310,6 +310,31 @@ Note: To avoid confusion, according to definition Tsetup --> signal remains stab
 - tvalid for acknowledgement --> time between SCL H-L (30) till SDA (worse: 30 , 70) (9th clock cycle).
 - tsp --> supress noise which occur under 50ns time frame.
 
+#### Characteristics of SCLH, SDAH, SDA and SCL I/0 stage for Hs mode
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/24e4453b-b003-476b-b724-bf7e32658310)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/e2bf5e9d-8197-4df3-898d-0333f6eb0f37)
+
+#### Characteristics of SDA and SCL bus lines for Hs mode
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/8673740d-3e85-4236-9483-6f0ee00c1484)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/26fb9db8-dfc8-4676-9fd9-c23c4d3ed088)
+<br>
+<br>
+
+**Waveform desciption:** <br>
+most are similar to previous case.
+trCL --> rise time for SCLH 
+trCL1 --> rise time SCLH at first cycle (Rp pull up)
+tfCL --> fall time for SCLH
+trDA --> rise time for SDAH
+tfDA --> fall time for SDAH
+<br>
+
+#### Characteristics of the USDA and USCL I/O stages
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/ddf8a8be-e0f3-4761-845d-c4e5de193739)
+
+#### UFm I2C-bus frequency and timing specifications
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/24c05760-4851-41f9-a0c1-155b74322db4)
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/6df10f0e-6a1c-4d07-8e50-17c72543ffbb)
 
 ### References
 1. [GFG](https://www.geeksforgeeks.org/i2c-communication-protocol/)
