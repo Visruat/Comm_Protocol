@@ -1,4 +1,4 @@
-![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/b65be4c6-d08c-436c-9af9-ff5764f3024e)## Images --> for review of concept and terms 
+## Images --> for review of concept and terms 
 1. Push pull drive
 2. Noise Margin
 3. Open Drain logic
@@ -363,10 +363,10 @@ most are similar to previous case.
   - Switched pull-up circuit
     - Rp(min) of 1.7 k limits bus capacitance to about 200pF to meet tr (300ns). ( sink current is 3mA; Vol = 0.4V)
     - for higher Cb (say 400pF), a switched pull up circuit is used. It is controlled by the bus levels itself
+    - Rp2 is on/off based of the bus level (bilateral switch). The combined effort of Rp2 and Rp1 meet the specified timing of 300ns rise time.
 
-![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/d9ce71f1-b26b-4dd6-a0ac-124b4cc5a143)
-    - Rp2 is on/off based of the bus level (bilateral switch). The combined effort of Rp2 and Rp1 meet the specified timing of 300ns rise time.   
-
+![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/d9ce71f1-b26b-4dd6-a0ac-124b4cc5a143) <br>
+       
 - **Series Resistors**
   - Protection against high voltage spikes from the bus line.
   - Noise margin for LOW Level = 0.1Vdd limits Rs(max).
