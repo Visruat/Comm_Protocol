@@ -340,12 +340,13 @@ most are similar to previous case.
 - **Pull up resistor sizing**
   - Rp(max) is a function of bus capacitance Cb. Rp(min) is limited by the supply voltage.
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/b10d5bd1-4873-4de0-b38b-e89427c91fd6)
-  - Equations:
+  - Equations: <br>
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/ae41d055-8bde-4963-bf65-a01985a799de)
 
 - **Operating above the maximum allowable bus capacitance**
   - Reduced fSCL
     - On operaring the bus at lower frequency, the higher bus capacitance can be accomodated.
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/601010fc-58b8-41be-8387-1205d48352f3)
 
   - Higher Drive Outputs
@@ -355,22 +356,27 @@ most are similar to previous case.
     - Split up the bus line by adding buffers/repeaters.
     - Ensures Maximum capacitance on both sides of the buffer.
     - However, adding a buffer will increase the delay and adds an additional transition time to each edge --> reduces fSCL and may introduce new Vil and Vol consideration.
+
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/6b68adfd-47b4-46f2-93c2-06a670754e38)
 
   - Switched pull-up circuit
     - Rp(min) of 1.7 k limits bus capacitance to about 200pF to meet tr (300ns). ( sink current is 3mA; Vol = 0.4V)
-    - for higher Cb (say 400pF), a switched pull up circuit is used. It is controlled by the bus levels itself.
+    - for higher Cb (say 400pF), a switched pull up circuit is used. It is controlled by the bus levels itself
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/d9ce71f1-b26b-4dd6-a0ac-124b4cc5a143)
     - Rp2 is on/off based of the bus level (bilateral switch). The combined effort of Rp2 and Rp1 meet the specified timing of 300ns rise time.   
 
 - **Series Resistors**
   - Protection against high voltage spikes from the bus line.
   - Noise margin for LOW Level = 0.1Vdd limits Rs(max).
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/4c9815a3-b760-4f4c-932f-e4b7c3a47fe5)
 
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/a2e3041c-7c57-4605-bfbf-7a4298fe4e9b)
 
 - **Input Leakage**
+
 ![image](https://github.com/Visruat/Comm_Protocol/assets/125136551/ae4f7d0e-9e7c-4b3f-afba-56f9a7790e45)
 
   - max value is 10uA.
